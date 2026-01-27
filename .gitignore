@@ -1,0 +1,11 @@
+*.o
+*.d
+*.a
+build/
+.vscode/
+.DS_Store
+
+# Ignore executables
+ex00/easyfind
+ex01/span
+ex02/Mutant
