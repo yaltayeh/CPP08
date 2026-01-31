@@ -1,6 +1,7 @@
 #pragma once
 
 #include <set>
+#include <stdexcept>
 
 class Span
 {
@@ -36,7 +37,7 @@ void Span::addNumber(T &container)
 template <typename T>
 void Span::addNumber(T iterator_begin, T iterator_end)
 {
-	size_t distance = std::distance(iterator_begin, iterator_end);
+	std::size_t distance = std::distance(iterator_begin, iterator_end);
 	if (distance + numbers.size() > max_size)
 		throw std::out_of_range("Span is already full");
 	for (T it = iterator_begin; it != iterator_end; ++it)

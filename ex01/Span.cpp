@@ -1,4 +1,5 @@
 #include "Span.hpp"
+#include <limits>
 
 Span::Span(unsigned int max_size)
 	: max_size(max_size), numbers()
@@ -22,9 +23,10 @@ unsigned int Span::shortestSpan() const
 	if (numbers.size() < 2)
 		throw std::runtime_error("Not enough numbers to find a span");
 
-	unsigned int shortest = UINT_MAX;
+	unsigned int shortest = std::numeric_limits<unsigned int>::max();
 	std::set<int>::const_iterator it = numbers.begin();
-	std::set<int>::const_iterator next_it = std::next(it);
+	std::set<int>::const_iterator next_it = it;
+	std::advance(next_it, 1);
 
 	while (next_it != numbers.end())
 	{
