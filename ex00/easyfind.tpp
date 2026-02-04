@@ -1,13 +1,12 @@
 #include "easyfind.hpp"
 #include <stdexcept>
+#include <algorithm>
 
 template <typename T>
 typename T::iterator easyfind(T& container, int value)
 {
-	for (typename T::iterator it = container.begin(); it != container.end(); ++it)
-	{
-		if (*it == value)
-			return it;
-	}
+	typename T::iterator it = std::find(container.begin(), container.end(), value);
+	if (it != container.end())
+		return it;
 	throw std::runtime_error("Value not found in container");
 }

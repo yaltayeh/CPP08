@@ -1,5 +1,7 @@
 #pragma once
 
+#include <algorithm>
+#include <stdexcept>
 #include <set>
 #include <stdexcept>
 
@@ -29,9 +31,7 @@ void Span::addNumber(T &container)
 {
 	if (container.size() + numbers.size() > max_size)
 		throw std::out_of_range("Span is already full");
-	typename T::iterator it = container.begin();
-	for (; it != container.end(); ++it)
-		numbers.insert(*it);
+	numbers.insert(numbers.end(), container.begin(), container.end());
 }
 
 template <typename T>
@@ -40,6 +40,5 @@ void Span::addNumber(T iterator_begin, T iterator_end)
 	std::size_t distance = std::distance(iterator_begin, iterator_end);
 	if (distance + numbers.size() > max_size)
 		throw std::out_of_range("Span is already full");
-	for (T it = iterator_begin; it != iterator_end; ++it)
-		numbers.insert(*it);
+	numbers.insert(numbers.end(), iterator_begin, iterator_end);
 }

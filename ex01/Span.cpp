@@ -1,5 +1,8 @@
 #include "Span.hpp"
-#include <limits>
+#include <algorithm>
+#include <stdexcept>
+#include <vector>
+#include <numeric>
 
 Span::Span(unsigned int max_size)
 	: max_size(max_size), numbers()
@@ -23,25 +26,19 @@ unsigned int Span::shortestSpan() const
 	if (numbers.size() < 2)
 		throw std::runtime_error("Not enough numbers to find a span");
 
-	unsigned int shortest = std::numeric_limits<unsigned int>::max();
-	std::set<int>::const_iterator it = numbers.begin();
-	std::set<int>::const_iterator next_it = it;
-	std::advance(next_it, 1);
+	std::vector<int> diffs(numbers.size());
+	std::adjacent_difference(numbers.begin(), numbers.end(), diffs.begin());
 
-	while (next_it != numbers.end())
-	{
-		unsigned int span = *next_it - *it;
-		if (span < shortest)
-			shortest = span;
-		++it;
-		++next_it;
-	}
-	return shortest;
+	return *std::min_element(diffs.begin() + 1, diffs.end());
 }
 
 unsigned int Span::longestSpan() const
 {
-	if (numbers.size() < 2)
+		if (numbers.size() < 2)
 		throw std::runtime_error("Not enough numbers to find a span");
-	return *numbers.rbegin() - *numbers.begin();
+
+	std::vector<int> diffs(numbers.size());
+	std::adjacent_difference(numbers.begin(), numbers.end(), diffs.begin());
+
+	return *std::max_element(diffs.begin() + 1, diffs.end());
 }

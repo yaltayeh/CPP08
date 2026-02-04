@@ -1,19 +1,10 @@
 #include <iostream>
 #include "Span.hpp"
 #include <cstdlib>
+#include <fstream>
 
-int main()
+void printResults(const Span &sp)
 {
-	int arr[] = {5, 3, -1, -2, 17, 9, 11};
-
-	Span sp = Span(10000 + sizeof(arr) / sizeof(arr[0]));
-	
-	sp.addNumber(arr, arr + sizeof(arr) / sizeof(arr[0]));
-
-	srand(time(0));
-	for (int i = 0; i < 10000; ++i)
-		sp.addNumber(rand());
-
 	try
 	{
 		std::cout << "Shortest Span: " << sp.shortestSpan() << std::endl;
@@ -31,5 +22,64 @@ int main()
 	{
 		std::cerr << e.what() << '\n';
 	}
-	return 0;
+}
+
+void test10_000()
+{
+	Span sp = Span(10000);
+
+	srand(time(NULL));
+	for (int i = 0; i < 10000; ++i)
+		sp.addNumber(rand());
+
+	printResults(sp);
+}
+
+void testUserInput(std::istream &in)
+{
+	Span sp = Span(10000);
+
+	in >> std::ws;
+	for (int i = 0; i < 10000; ++i)
+	{
+		int number;
+		in >> number;
+		if (in.fail() || in.eof())
+			break;
+		sp.addNumber(number);
+		in >> std::ws;
+	}
+
+	printResults(sp);
+}
+
+int main(int argc, char **argv)
+{
+	if (argc > 2)
+	{
+		std::cerr << "Usage: " << argv[0] << " [input_file|- for stdin]" << std::endl;
+		return 1;
+	}
+	if (argv[1])
+	{
+		if (std::string(argv[1]) == "-")
+		{
+			std::cout << "Enter numbers (separate by spaces), end with EOF (Ctrl+D):" << std::endl;
+			testUserInput(std::cin);
+			return 0;
+		}
+		std::ifstream file(argv[1]);
+		if (!file)
+		{
+			std::cerr << "Could not open file: " << argv[1] << std::endl;
+			return 1;
+		}
+		testUserInput(file);
+		return 0;
+	}
+	else
+	{
+		// No arguments, run default test
+		test10_000();
+	}
 }

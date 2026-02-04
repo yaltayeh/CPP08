@@ -1,7 +1,7 @@
 #include <iostream>
-#include "MutantStack.hpp"
 #include <list>
 #include <vector>
+#include "MutantStack.hpp"
 
 #define MutantStack MutantStack
 #define push push
@@ -29,6 +29,6 @@ int main()
 	{
 		std::cout << *it << std::endl;
 		++it;
-	}	
+	}
 	return 0;
 }
